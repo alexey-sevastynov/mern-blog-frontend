@@ -24,10 +24,20 @@ export const Login = () => {
       password: "1s2e3v4aalexxs",
     },
   });
-  console.log("isAuth", isAuth);
-  const onSubmit = (values) => {
-    dispatch(fetchAuth(values));
+
+  const onSubmit = async (values) => {
+    const data = await dispatch(fetchAuth(values));
+
+    if (!data.payload) {
+      return alert("failed to login!");
+    }
+
+    if ("token" in data.payload) {
+      window.localStorage.setItem("token", data.payload.token);
+    }
   };
+
+  // React.useEffect();
 
   if (isAuth) {
     return <Navigate to="/" />;
