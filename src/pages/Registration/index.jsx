@@ -75,7 +75,7 @@ export const Registration = () => {
           {...register("password", { required: "indicate password" })}
         />
         <Button
-          disabled={!isValid}
+          disabled={!errors}
           type="submit"
           size="large"
           variant="contained"
