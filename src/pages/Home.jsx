@@ -45,7 +45,9 @@ export const Home = () => {
                 id={obj._id}
                 title={obj.title}
                 imageUrl={
-                  obj.imageUrl ? `http://localhost:1313${obj.imageUrl}` : ""
+                  obj.imageUrl
+                    ? `https://fullstack-project-qfu9.onrender.com${obj.imageUrl}`
+                    : ""
                 }
                 user={{
                   avatarUrl:

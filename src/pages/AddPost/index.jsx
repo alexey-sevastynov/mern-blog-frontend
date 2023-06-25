@@ -135,7 +135,7 @@ export const AddPost = () => {
           </Button>
           <img
             className={styles.image}
-            src={`http://localhost:1313${imageUrl}`}
+            src={`https://fullstack-project-qfu9.onrender.com${imageUrl}`}
             alt="Uploaded"
           />
         </>
