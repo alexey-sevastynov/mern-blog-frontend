@@ -17,7 +17,7 @@ export const Post = ({
   id,
   title,
   createdAt,
-  imageUrl,
+  imageBase64,
   user,
   viewsCount,
   commentsCount,
@@ -39,7 +39,7 @@ export const Post = ({
     }
   };
 
-  console.log("IMAGE_URL", imageUrl);
+  console.log("IMAGE_URL", imageBase64);
 
   return (
     <div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>
@@ -55,10 +55,10 @@ export const Post = ({
           </IconButton>
         </div>
       )}
-      {imageUrl && (
+      {imageBase64 && (
         <img
           className={clsx(styles.image, { [styles.imageFull]: isFullPost })}
-          src={imageUrl}
+          src={imageBase64}
           alt={title}
         />
       )}

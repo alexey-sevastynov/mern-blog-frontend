@@ -6,6 +6,7 @@ import SimpleMDE from "react-simplemde-editor";
 import { selectAuth } from "../../redux/slices/auth";
 import { useSelector } from "react-redux";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { convertToBase64 } from "../../helpers/convertToBase64";
 import axios from "../../axios";
 
 import "easymde/dist/easymde.min.css";
@@ -13,7 +14,7 @@ import styles from "./AddPost.module.scss";
 
 export const AddPost = () => {
   const { id } = useParams();
-  const [imageUrl, setImageUrl] = React.useState("");
+  const [imageBase64, setImageBase64] = React.useState("");
   const navigate = useNavigate();
   const isAuth = useSelector(selectAuth);
 
@@ -30,12 +31,15 @@ export const AddPost = () => {
   const handleChangeFile = async (event) => {
     // console.log(event.target.files);
     try {
-      const formData = new FormData(); // format file for send file to backend
+      // const formData = new FormData(); // format file for send file to backend
       const file = event.target.files[0];
-      formData.append("image", file);
-      const { data } = await axios.post("/upload", formData);
+      const base64 = await convertToBase64(file);
 
-      setImageUrl(data.url);
+      // formData.append("image", base64);
+      // const { data } = await axios.post("/upload", formData);
+
+      // setImageBase64(data.url);
+      setImageBase64(base64);
     } catch (error) {
       console.warn(error);
       alert("Error about loading file!");
@@ -43,7 +47,7 @@ export const AddPost = () => {
   };
 
   const onClickRemoveImage = () => {
-    setImageUrl(""); // delete image
+    setImageBase64(""); // delete image
   };
 
   const onChange = React.useCallback((value) => {
@@ -56,7 +60,7 @@ export const AddPost = () => {
 
       const fields = {
         title,
-        imageUrl,
+        imageBase64,
         text,
         tags,
       };
@@ -71,7 +75,7 @@ export const AddPost = () => {
     } catch (error) {
       console.warn(error);
       alert(
-        `Error about create article! title: ${title}, imageUrl: ${imageUrl}, tags: ${tags}, text: ${text}`
+        `Error about create article! title: ${title}, imageBase64: ${imageBase64}, tags: ${tags}, text: ${text}`
       );
     }
   };
@@ -84,7 +88,7 @@ export const AddPost = () => {
           setTitle(data.title);
           setText(data.text);
           setTags(data.tags.join(","));
-          setImageUrl(data.imageUrl);
+          setImageBase64(data.imageBase64);
         })
         .catch((err) => alert(err));
     }
@@ -110,7 +114,7 @@ export const AddPost = () => {
   }
 
   return (
-    <Paper style={{ padding: 30 }}>
+    <Paper style={{ padding: "15px" }}>
       <Button
         onClick={() => inputFileRef.current.click()}
         variant="outlined"
@@ -124,7 +128,7 @@ export const AddPost = () => {
         onChange={handleChangeFile}
         hidden
       />
-      {imageUrl && (
+      {imageBase64 && (
         <>
           <Button
             variant="contained"
@@ -133,11 +137,7 @@ export const AddPost = () => {
           >
             Удалить
           </Button>
-          <img
-            className={styles.image}
-            src={`https://fullstack-project-qfu9.onrender.com${imageUrl}`}
-            alt="Uploaded"
-          />
+          <img className={styles.image} src={imageBase64} alt="Uploaded" />
         </>
       )}
       <br />

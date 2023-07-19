@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "https://fullstack-project-qfu9.onrender.com",
+  baseURL: "https://fullstack-project-wine.vercel.app",
 });
 
 instance.interceptors.request.use((config) => {
